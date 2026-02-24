@@ -1,6 +1,8 @@
-from flask import Blueprint
+from flask import Blueprint,render_template
+from flask_login import login_required,current_user
 
 task= Blueprint('task',__name__)
-@task.route("/")
-def home():
-    return "<h1> TO-DO Home page </h1>"
+@task.route("/dashboard")
+@login_required
+def dashboard():
+    return "<h1>welcome to the dashboard" + current_user.username +"</h1>"    
