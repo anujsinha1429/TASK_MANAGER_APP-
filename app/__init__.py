@@ -13,6 +13,10 @@ def create_app(): # jb v flask app chahiye iss function ko call kro (application
     login_manager.init_app(app) #login system attach 
     login_manager.login_view="auth.login" # bina login ke dashboard khole toh login page redirect hojaiye 
     from app import models
+    from app.models import User
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
     from app.routes.auth import auth
     from app.routes.task import task
     app.register_blueprint(auth)
