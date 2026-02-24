@@ -4,4 +4,5 @@ __pycache__/
 .env
 .venv
 todoenv/
+venv/
 .DS_Store
