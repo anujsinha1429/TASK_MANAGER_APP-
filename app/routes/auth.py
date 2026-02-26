@@ -2,7 +2,7 @@ from flask import Blueprint,render_template,request,redirect,url_for
 from werkzeug.security import generate_password_hash,check_password_hash
 from app import db
 from app.models import User
-from flask_login import login_user
+from flask_login import login_user ,login_required,logout_user
 
 auth=Blueprint('auth',__name__)
 
@@ -43,3 +43,10 @@ def login():
         return redirect(url_for("task.dashboard"))
            
     return render_template("login.html")
+
+@auth.route("/logout",methods=["GET"])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("auth.login"))
+
