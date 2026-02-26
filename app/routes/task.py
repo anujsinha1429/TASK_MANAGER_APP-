@@ -16,7 +16,7 @@ def add_task():
     content= request.form.get("content")
     if not content:
         return redirect(url_for("task.dashboard"))
-    new_task=Task(content=content,user_id=current_user.id)
+    new_task=Task(content=content,status="not_started",user_id=current_user.id)
     db.session.add(new_task)
     db.session.commit()
 
@@ -30,5 +30,31 @@ def delete_task(task_id):
     if task.user_id != current_user.id:
         return " you can not delete this task"
     db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for("task.dashboard"))
+
+# @task.route("/toggle/<int:task_id>")
+# @login_required
+# def toggle_task(task_id):
+#     task=Task.query.get_or_404(task_id)
+#     #security check 
+#     if task.user_id !=current_user.id:
+#         return "you can not modify this task"
+#     task.completed= not task.completed
+#     db.session.commit()
+#     return redirect(url_for("task.dashboard"))
+
+@task.route("/status/<int:task_id>")
+@login_required
+def change_status(task_id):
+    task=Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        return "you can not modify this task "
+    elif task.status=="not_started":
+        task.status="working"
+    elif task.status=="working":
+        task.status="completed"
+    else:
+        task.status="not_started"
     db.session.commit()
     return redirect(url_for("task.dashboard"))
