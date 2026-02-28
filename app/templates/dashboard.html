@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Dashboard</title>
+{% extends "base.html" %}
 
-</head>
-<body>
+{% block content %}
+
+{%  block title %} Dashboard {% endblock %}
+
     <h2>welcome {{current_user.username |capitalize }} 👏</h2>
     <h3> Add task </h3>
     <form method="POST" action ="/add-task">
@@ -12,30 +11,8 @@
         <br>
         <button type="submit">ADD</button>
     </form>>
-    <h3> your Tasks </h3>
-    <ul>
-        {% for task in tasks %}
-         <li>
-            {{ task.content }}
-            {% if task.status == "not_started" %}
-                (not done 🔴)
-            {% elif task.status == "working" %}
-                (working on it 🟡)
-            {% else %}
-                (completed 🟢)
-            {% endif %}
-            <a href ="{{ url_for('task.change_status',task_id=task.id) }}"> change status </a> 
-            <br>
-            <a href ="{{ url_for('task.delete_task',task_id=task.id) }}"> remove </a>       
-
-         </li>
-        {% else %}
-            <p>No tasks yet!</p>
-        {% endfor %}    
-    </ul>
     <br>
+    
     <a href="/logout">Logout</a>
    
-    
-</body>
-</html>
+ {% endblock %}
