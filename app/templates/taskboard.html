@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2> Your Board </h2>
+    <UL>
+        {% for task in tasks %}
+            <li>
+            {{task.content}}
+                
+            {% if task.status == "not_started" %}
+                (not done 🔴)
+            {% elif task.status == "working" %}
+                (working on it 🟡)
+            {% else %}
+                (completed 🟢)
+            {% endif %}
+            <a href ="{{ url_for('task.change_status',task_id=task.id) }}"> change status </a> 
+            <br>
+            <a href ="{{ url_for('task.delete_task',task_id=task.id) }}"> remove </a>    
+
+            </li>
+        {% else %}
+            <p>No tasks yet!</p>
+        {% endfor %}
+
+    </UL>
+    <br>
+    <a href="/logout">Logout</a>
+    {% endblock %}
