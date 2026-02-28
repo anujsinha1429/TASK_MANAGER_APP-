@@ -58,3 +58,9 @@ def change_status(task_id):
         task.status="not_started"
     db.session.commit()
     return redirect(url_for("task.dashboard"))
+
+@task.route("/taskboard")
+@login_required
+def taskboard():
+    tasks=Task.query.filter_by(user_id=current_user.id).all()
+    return render_template("taskboard.html",tasks=tasks)
