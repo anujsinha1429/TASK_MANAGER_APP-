@@ -1,13 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import os
 
 db=SQLAlchemy()
 login_manager=LoginManager() #in dono line seh abhi db bana nhi hai abhi bss remote control bana hai
 
 def create_app(): # jb v flask app chahiye iss function ko call kro (application factory pattern)
     app=Flask(__name__)
-    app.config['SECRET_KEY']='supersecretkey'
+    app.config['SECRET_KEY']=os.environ.get("SECRET_KEY") or "you-will-never-guess"
     app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///site.db'
     db.init_app(app)
     login_manager.init_app(app) #login system attach 

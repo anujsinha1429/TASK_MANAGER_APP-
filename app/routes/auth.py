@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request,redirect,url_for
+from flask import Blueprint,render_template,request,redirect,url_for,flash
 from werkzeug.security import generate_password_hash,check_password_hash
 from app import db
 from app.models import User
@@ -24,6 +24,7 @@ def register():
 
         db.session.add(new_user)
         db.session.commit()
+        flash("Registration successful! You can now log in. 🎉", "success")
         return redirect(url_for("auth.login"))
     
     return render_template("register.html")
@@ -39,11 +40,15 @@ def login():
         user=User.query.filter_by(username=username).first()
 
         if user is None:
-            return "Invalid username or password "
+           flash("username does not exist ❌", "danger")
+           return redirect(url_for("auth.login"))
         if not check_password_hash(user.password,password):
-             return "incorrect password"
+            flash("Invalid username or password! ❌", "danger")
+            return redirect(url_for("auth.login"))
+             
         
         login_user(user)
+        flash(f"welcome , {user.username.capitalize()}! 🎉", "success")
         return redirect(url_for("auth.home"))
            
     return render_template("login.html")
@@ -52,5 +57,6 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash("You have been logged out! 👋", "inf")
     return redirect(url_for("auth.home"))
 

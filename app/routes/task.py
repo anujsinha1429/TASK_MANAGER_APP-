@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,redirect,url_for,request
+from flask import Blueprint,render_template,redirect,url_for,request,flash
 from app import db  
 from flask_login import login_required,current_user
 from app.models import Task
@@ -19,7 +19,7 @@ def add_task():
     new_task=Task(content=content,status="not_started",user_id=current_user.id)
     db.session.add(new_task)
     db.session.commit()
-
+    flash("Task added successfully! ✅✅", "success")
     return redirect(url_for("task.dashboard"))
 
 @task.route("/delete/<int:task_id>")
@@ -31,6 +31,7 @@ def delete_task(task_id):
         return " you can not delete this task"
     db.session.delete(task)
     db.session.commit()
+    flash("Task deleted successfully! 🗑️", "danger")
     return redirect(url_for("task.taskboard"))
 
 # @task.route("/toggle/<int:task_id>")
@@ -52,10 +53,13 @@ def change_status(task_id):
         return "you can not modify this task "
     elif task.status=="not_started":
         task.status="working"
+        flash("task started!🚀", "info")
     elif task.status=="working":
         task.status="completed"
+        flash("task completed!🎉", "success")
     else:
         task.status="not_started"
+        flash("Task moved back to not started! 🔄", "warning")
     db.session.commit()
     return redirect(url_for("task.taskboard"))
 
