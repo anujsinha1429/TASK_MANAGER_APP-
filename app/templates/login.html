@@ -1,25 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h2>
-        login page 
-    </h2>
-    <form method="POST"> 
-        <label>username</label>
-        <br>
-        <input type="text" name="username" placeholder="enter your username " required>
-        <br>
-        <br>
-        <label>password</label>
-        <br>
-        <input type="password" name="password" placeholder="enter your password " required>
-        <br>
-        <br>
-        <button type="submit">Login</button>
-    </form>
-    
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-container">
+
+    <div class="auth-card">
+        <h2>Login</h2>
+
+        <form method="POST">
+
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter username" required>
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <p class="switch">
+            Don’t have an account?
+            <a href="{{ url_for('auth.register') }}">Create one</a>
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

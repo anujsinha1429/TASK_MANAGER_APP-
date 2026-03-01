@@ -6,6 +6,10 @@ from flask_login import login_user ,login_required,logout_user
 
 auth=Blueprint('auth',__name__)
 
+@auth.route("/")
+def home():
+    return render_template("home.html",page="home")
+
 @auth.route("/register",methods=["GET","POST"])
 def register():
     if request.method=="POST":
@@ -40,7 +44,7 @@ def login():
              return "incorrect password"
         
         login_user(user)
-        return redirect(url_for("task.dashboard"))
+        return redirect(url_for("auth.home"))
            
     return render_template("login.html")
 
@@ -48,5 +52,5 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("auth.home"))
 

@@ -2,29 +2,79 @@
 
 {% block content %}
 
-    <h2> Your Board </h2>
-    <UL>
-        {% for task in tasks %}
-            <li>
-            {{task.content}}
-                
-            {% if task.status == "not_started" %}
-                (not done 🔴)
-            {% elif task.status == "working" %}
-                (working on it 🟡)
+<section class="board">
+
+    <h2 class="board-title">Your Board 🎯</h2>
+
+    <div class="board-columns">
+
+        <!-- NOT STARTED -->
+        <div class="column">
+            <h3>Not Started ❌</h3>
+
+            {% if not_done %}
+                {% for task in not_done %}
+                    <div class="task-item">
+                        <p>{{ task.content }}</p>
+
+                        <div class="task-actions">
+                            <a href="{{ url_for('task.change_status', task_id=task.id) }}">Start 🏁</a>
+                            <br>
+                            <a href="{{ url_for('task.delete_task', task_id=task.id) }}">Remove 🚚</a>
+                        </div>
+                    </div>
+                {% endfor %}
             {% else %}
-                (completed 🟢)
+                <p class="empty">No pending tasks 🎉</p>
             {% endif %}
-            <a href ="{{ url_for('task.change_status',task_id=task.id) }}"> change status </a> 
-            <br>
-            <a href ="{{ url_for('task.delete_task',task_id=task.id) }}"> remove </a>    
+        </div>
 
-            </li>
-        {% else %}
-            <p>No tasks yet!</p>
-        {% endfor %}
 
-    </UL>
-    <br>
-    <a href="/logout">Logout</a>
-    {% endblock %}
+        <!-- WORKING -->
+        <div class="column">
+            <h3>Working 🟡</h3>
+
+            {% if working %}
+                {% for task in working %}
+                    <div class="task-item">
+                        <p>{{ task.content }}</p>
+
+                        <div class="task-actions">
+                            <a href="{{ url_for('task.change_status', task_id=task.id) }}">Complete 👍</a>
+                            <br>
+                            <a href="{{ url_for('task.delete_task', task_id=task.id) }}">Remove 🚚</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty">Nothing in progress</p>
+            {% endif %}
+        </div>
+
+
+        <!-- COMPLETED -->
+        <div class="column">
+            <h3>Completed ✅</h3>
+
+            {% if completed %}
+                {% for task in completed %}
+                    <div class="task-item completed-task">
+                        <p>{{ task.content }}</p>
+
+                        <div class="task-actions">
+                            <a href="{{ url_for('task.change_status', task_id=task.id) }}">Undo ↩️</a>
+                            <br>
+                            <a href="{{ url_for('task.delete_task', task_id=task.id) }}">Remove 🚚</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty">No completed tasks yet</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</section>
+<a href="{{ url_for('task.dashboard') }}" class="btn primary" style="margin-top: 20px;" > ↩️ Back to Dashboard</a>
+{% endblock %}

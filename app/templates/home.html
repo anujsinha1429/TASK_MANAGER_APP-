@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="home">
+    <h1 class="hero-title">Welcome to Task Manager</h1>
+    <p class="tagline">Organize your tasks and boost your productivity!</p>
+
+    <div class="auth-links">
+        {% if current_user.is_authenticated %}
+            <p class="welcome">
+                Welcome back, {{ current_user.username | capitalize }} 👋
+                <br>
+                <a href="{{ url_for('task.dashboard') }}" class="btn primary" style="margin-top: 20px;" > Dashboard</a>
+            </p>
+            <!-- <a href="{{ url_for('auth.logout') }}" class="btn primary">Logout</a> -->
+        {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn primary">Login</a>
+            <a href="{{ url_for('auth.register') }}" class="btn secondary">Create Account</a>
+        {% endif %}
+    </div>
+
+    <div class="features-card">
+        <h2>Features ✨</h2>
+        <ul class="feature-list">
+            <li>Add your daily tasks</li>
+            <li>Track your progress</li>
+            <li>Personal dashboard</li>
+            <li>Secure login system</li>
+            <li>Separate task board</li>
+        </ul>
+    </div>
+</section>
+
+{% endblock %}

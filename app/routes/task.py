@@ -8,7 +8,7 @@ task= Blueprint('task',__name__)
 @login_required
 def dashboard():
     tasks=Task.query.filter_by(user_id=current_user.id).all()
-    return render_template("dashboard.html",tasks=tasks)
+    return render_template("dashboard.html",tasks=tasks,page="dashboard")
 
 @task.route("/add-task",methods=["POST"])
 @login_required
@@ -31,7 +31,7 @@ def delete_task(task_id):
         return " you can not delete this task"
     db.session.delete(task)
     db.session.commit()
-    return redirect(url_for("task.dashboard"))
+    return redirect(url_for("task.taskboard"))
 
 # @task.route("/toggle/<int:task_id>")
 # @login_required
@@ -57,10 +57,14 @@ def change_status(task_id):
     else:
         task.status="not_started"
     db.session.commit()
-    return redirect(url_for("task.dashboard"))
+    return redirect(url_for("task.taskboard"))
 
 @task.route("/taskboard")
 @login_required
 def taskboard():
-    tasks=Task.query.filter_by(user_id=current_user.id).all()
-    return render_template("taskboard.html",tasks=tasks)
+    not_done=Task.query.filter_by(user_id=current_user.id,status="not_started").all()
+    working= Task.query.filter_by(user_id=current_user.id,status="working").all()
+    completed= Task.query.filter_by(user_id=current_user.id,status="completed").all()
+    return render_template("taskboard.html",not_done=not_done,working=working,completed=completed,page="taskboard")
+
+    
