@@ -8,7 +8,7 @@ login_manager=LoginManager() #in dono line seh abhi db bana nhi hai abhi bss rem
 
 def create_app(): # jb v flask app chahiye iss function ko call kro (application factory pattern)
     app=Flask(__name__)
-    app.config['SECRET_KEY']=os.environ.get("SECRET_KEY") or "you-will-never-guess"
+    app.config['SECRET_KEY']=os.environ.get("SECRET_KEY","devkey123") or "you-will-never-guess"
     app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///site.db'
     db.init_app(app)
     login_manager.init_app(app) #login system attach 
