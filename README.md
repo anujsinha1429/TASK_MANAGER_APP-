@@ -5,7 +5,7 @@ This project demonstrates how real web applications handle user registration, lo
 
 ---
 
-🚀 Features
+🚀 Features:
 
 - User Registration
 - User Login
